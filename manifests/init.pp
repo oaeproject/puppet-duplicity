@@ -8,6 +8,7 @@ define duplicity(
   $pubkey_id = undef,
   $hour = undef,
   $minute = undef,
+  $backup_script_file = undef,
   $mail_to = undef,
   $mail_from = undef,
   $mail_tmp_mailbody = undef,
@@ -60,6 +61,11 @@ define duplicity(
   $_minute = $minute ? {
     undef => $duplicity::params::minute,
     default => $minute
+  }
+
+  $_backup_script_file = $backup_script_file ? {
+    undef => $duplicity::params::backup_script_file,
+    default => $backup_script_file
   }
 
   $_mail_to = $mail_to ? {
@@ -139,9 +145,17 @@ define duplicity(
     's3' => ["AWS_ACCESS_KEY_ID='$_dest_id'", "AWS_SECRET_ACCESS_KEY='$_dest_key'"],
   }
 
+  file { "$backup_script_file_$name":
+    path => $backup_script_file,
+    owner => root,
+    group => root,
+    mode => 744,
+    content => template("duplicity/file-backup.sh.erb")
+  }
+
   cron { $name :
     environment => $environment,
-    command => template("duplicity/file-backup.sh.erb"),
+    command => $backup_script_file,
     user => 'root',
     minute => $_minute,
     hour => $_hour,
