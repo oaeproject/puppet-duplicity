@@ -8,6 +8,12 @@ define duplicity(
   $pubkey_id = undef,
   $hour = undef,
   $minute = undef,
+  $mail_to = undef,
+  $mail_from = undef,
+  $mail_tmp_mailbody = undef,
+  $mail_tmp_message = undef,
+  $mail_subject_success = undef
+  $mail_subject_error = undef,
   $full_if_older_than = undef,
   $pre_command = undef,
   $remove_older_than = undef
@@ -56,6 +62,38 @@ define duplicity(
     default => $minute
   }
 
+  $_mail_to = $mail_to ? {
+    undef => $duplicity::params::mail_to,
+    default => $mail_to
+  }
+
+  $_mail_from = $mail_from ? {
+    undef => $duplicity::params::mail_from,
+    default => $mail_from
+  }
+
+  if ($_mail_to)
+
+  $_mail_tmp_mailbody = $mail_tmp_mailbody ? {
+    undef => $duplicity::params::mail_tmp_mailbody,
+    default => $mail_tmp_mailbody
+  }
+
+  $_mail_tmp_message = $mail_tmp_message ? {
+    undef => $duplicity::params::mail_tmp_message,
+    default => $mail_tmp_message
+  }
+
+  $_mail_subject_success = $mail_subject_success ? {
+    undef => $duplicity::params::mail_subject_success,
+    default => $mail_subject_success
+  }
+
+  $_mail_subject_error = $mail_subject_error ? {
+    undef => $duplicity::params::mail_subject_error,
+    default => $mail_subject_error
+  }
+
   $_full_if_older_than = $full_if_older_than ? {
     undef => $duplicity::params::full_if_older_than,
     default => $full_if_older_than
@@ -91,7 +129,7 @@ define duplicity(
 
   $_remove_older_than_command = $_remove_older_than ? {
     undef => '',
-    default => " && duplicity remove-older-than $_remove_older_than --s3-use-new-style $_encryption --force $_target_url"
+    default => " && duplicity remove-older-than $_remove_older_than --s3-use-new-style $_encryption --force $_target_url >> $_mail_tmp_mailbody"
   }
 
   if (!$_dest_id or !$_dest_key) {

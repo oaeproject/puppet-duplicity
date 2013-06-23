@@ -1,3 +1,31 @@
 <%= @_pre_command -%>
-duplicity --full-if-older-than <%= @_full_if_older_than -%> --s3-use-new-style <%= @_encryption -%> --include '<%= @directory -%>' --exclude '**' / <%= @_target_url -%>
-<%= @_remove_older_than_command -%>
+duplicity --full-if-older-than <%= @_full_if_older_than -%> --s3-use-new-style <%= @_encryption -%> --include '<%= @directory -%>' --exclude '**' / <%= @_target_url %> > <%= @_mail_tmp_mailbody -%>
+<%= @_remove_older_than_command %> <% if @_remove_older_than_command != '' %> >> <%= @_mail_tmp_mailbody %><% end -%>
+
+SCRIPT_RESULT=$?
+
+if [ "$SCRIPT_RESULT" -ne "0" ]; then
+    # There was an error performing backups
+<%- if @_mail_subject_error -%>
+    SUBJECT="<%= @_mail_subject_error %>"
+<%- end -%>
+else
+    # It was successful
+<%- if @_mail_subject_success -%>
+    SUBJECT="<%= @_mail_subject_success %>"
+fi
+
+<%- if @_mail_to -%>
+if [ "$SUBJECT" -ne "" ]; then
+    echo "Subject: $SUBJECT"                                >   <%= @_mail_tmp_message -%>
+    echo "Content-Type: text/html"                          >>  <%= @_mail_tmp_message -%>
+    sed 's/$/\<br \/\>/' <%= @_mail_tmp_mailbody %>         >>  <%= @_mail_tmp_message -%>
+    echo ""                                                 >>  <%= @_mail_tmp_message -%>
+
+    cat <%= @_mail_tmp_message -%> | sendmail -v -F "<%= @_mail_from %>" <%= @_mail_to %>
+
+<%- end -%>
+
+
+
+exit $SCRIPT_RESULT
