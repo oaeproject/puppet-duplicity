@@ -24,6 +24,7 @@ if [ "$SUBJECT" -ne "" ]; then
     echo ""                                                 >>  <%= @_mail_tmp_message %>
 
     cat <%= @_mail_tmp_message %> | sendmail -v -F "<%= @_mail_from %>" <%= @_mail_to -%>
+fi
 <%- end -%>
 
 exit $SCRIPT_RESULT
