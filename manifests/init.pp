@@ -72,8 +72,6 @@ define duplicity(
     default => $mail_from
   }
 
-  if ($_mail_to)
-
   $_mail_tmp_mailbody = $mail_tmp_mailbody ? {
     undef => $duplicity::params::mail_tmp_mailbody,
     default => $mail_tmp_mailbody
