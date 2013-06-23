@@ -23,8 +23,8 @@ if [ "$SUBJECT" -ne "" ]; then
     sed 's/$/\<br \/\>/' <%= @_mail_tmp_mailbody %>         >>  <%= @_mail_tmp_message %>
     echo ""                                                 >>  <%= @_mail_tmp_message %>
 
-    cat <%= @_mail_tmp_message %> | sendmail -v -F "<%= @_mail_from %>" <%= @_mail_to -%>
+    cat <%= @_mail_tmp_message %> | sendmail -v -F "<%= @_mail_from %>" <%= @_mail_to %>
 fi
-<%- end -%>
+<%- end %>
 
 exit $SCRIPT_RESULT
