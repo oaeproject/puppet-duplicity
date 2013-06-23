@@ -146,7 +146,7 @@ define duplicity(
   }
 
   file { "${_backup_script_file}_${name}":
-    path => $backup_script_file,
+    path => $_backup_script_file,
     owner => root,
     group => root,
     mode => 744,
