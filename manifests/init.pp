@@ -145,7 +145,7 @@ define duplicity(
     's3' => ["AWS_ACCESS_KEY_ID='$_dest_id'", "AWS_SECRET_ACCESS_KEY='$_dest_key'"],
   }
 
-  file { "${backup_script_file}_${name}":
+  file { "${_backup_script_file}_${name}":
     path => $backup_script_file,
     owner => root,
     group => root,
