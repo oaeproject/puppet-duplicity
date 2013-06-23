@@ -12,7 +12,7 @@ define duplicity(
   $mail_from = undef,
   $mail_tmp_mailbody = undef,
   $mail_tmp_message = undef,
-  $mail_subject_success = undef
+  $mail_subject_success = undef,
   $mail_subject_error = undef,
   $full_if_older_than = undef,
   $pre_command = undef,
