@@ -4,7 +4,7 @@ duplicity --full-if-older-than <%= @_full_if_older_than -%> --s3-use-new-style <
 
 SCRIPT_RESULT=$?
 
-if [ "$SCRIPT_RESULT" -ne "0" ]; then
+if [ "$SCRIPT_RESULT" != "0" ]; then
     # There was an error performing backups
 <%- if @_mail_subject_error -%>
     SUBJECT="<%= @_mail_subject_error %>"
@@ -17,7 +17,7 @@ else
 fi
 
 <%- if @_mail_to -%>
-if [ "$SUBJECT" -ne "" ]; then
+if [ "$SUBJECT" != "" ]; then
     echo "Subject: $SUBJECT"                                >   <%= @_mail_tmp_message %>
     echo "Content-Type: text/html"                          >>  <%= @_mail_tmp_message %>
     sed 's/$/\<br \/\>/' <%= @_mail_tmp_mailbody %>         >>  <%= @_mail_tmp_message %>

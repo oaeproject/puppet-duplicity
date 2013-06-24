@@ -7,6 +7,7 @@ class duplicity::params(
   $hour                  = $duplicity::defaults::hour,
   $minute                = $duplicity::defaults::minute,
   $backup_script_file    = $duplicity::defaults::backup_script_file,
+  $backup_script_path    = $duplicity::defaults::backup_script_path,
   $full_if_older_than    = $duplicity::defaults::full_if_older_than,
   $remove_older_than     = undef,
   $mail_to               = undef,

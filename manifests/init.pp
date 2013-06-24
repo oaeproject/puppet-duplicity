@@ -9,6 +9,7 @@ define duplicity(
   $hour = undef,
   $minute = undef,
   $backup_script_file = undef,
+  $backup_script_path = undef,
   $mail_to = undef,
   $mail_from = undef,
   $mail_tmp_mailbody = undef,
@@ -66,6 +67,11 @@ define duplicity(
   $_backup_script_file = $backup_script_file ? {
     undef => $duplicity::params::backup_script_file,
     default => $backup_script_file
+  }
+
+  $_backup_script_path = $backup_script_path ? {
+    undef => $duplicity::params::backup_script_path,
+    default => $backup_script_path
   }
 
   $_mail_to = $mail_to ? {
@@ -141,8 +147,8 @@ define duplicity(
   }
 
   $environment = $_cloud ? {
-    'cf' => ["CLOUDFILES_USERNAME='$_dest_id'", "CLOUDFILES_APIKEY='$_dest_key'"],
-    's3' => ["AWS_ACCESS_KEY_ID='$_dest_id'", "AWS_SECRET_ACCESS_KEY='$_dest_key'"],
+    'cf' => ["CLOUDFILES_USERNAME='$_dest_id'", "CLOUDFILES_APIKEY='$_dest_key'", "PATH='$_backup_script_path'"],
+    's3' => ["AWS_ACCESS_KEY_ID='$_dest_id'", "AWS_SECRET_ACCESS_KEY='$_dest_key'", "PATH='$_backup_script_path'"],
   }
 
   file { "${_backup_script_file}_${name}":
