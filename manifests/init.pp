@@ -152,7 +152,7 @@ define duplicity(
   }
 
   file { "${_backup_script_file}_${name}":
-    path => "$_backup_script_file >> /var/log/backup-cron.log 2>> /var/log/backup-cron.log",
+    path => $_backup_script_file,
     owner => root,
     group => root,
     mode => 744,
@@ -161,7 +161,7 @@ define duplicity(
 
   cron { $name :
     environment => $environment,
-    command => $backup_script_file,
+    command => "$_backup_script_file >> /var/log/backup-cron.log 2>> /var/log/backup-cron.log",
     user => 'root',
     minute => $_minute,
     hour => $_hour,
