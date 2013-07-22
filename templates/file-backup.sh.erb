@@ -1,5 +1,5 @@
 <%= @_pre_command -%>
-duplicity --full-if-older-than <%= @_full_if_older_than -%> --s3-use-new-style <%= @_encryption -%> --include '<%= @directory -%>' --exclude '**' / <%= @_target_url %> > <%= @_mail_tmp_mailbody -%>
+duplicity --full-if-older-than <%= @_full_if_older_than -%> --s3-use-new-style <%= @_encryption -%> <% @excludes.each do |exclude| %>--exclude '<%= exclude%>' <% end %><%= @directory -%> <%= @_target_url %> > <%= @_mail_tmp_mailbody -%>
 <%= @_remove_older_than_command %>
 
 SCRIPT_RESULT=$?

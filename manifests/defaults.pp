@@ -1,4 +1,5 @@
 class duplicity::defaults {
+  $excludes = []
   $folder = $::fqdn
   $cloud = 's3'
   $hour = 0

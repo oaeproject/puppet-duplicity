@@ -1,5 +1,6 @@
 define duplicity(
   $directory,
+  $excludes = undef,
   $bucket = undef,
   $dest_id = undef,
   $dest_key = undef,
@@ -23,6 +24,11 @@ define duplicity(
 
   include duplicity::params
   include duplicity::packages
+
+  $_excludes = $excludes ? {
+    undef => $duplicity::params::excludes,
+    default => $excludes
+  }
 
   $_bucket = $bucket ? {
     undef => $duplicity::params::bucket,

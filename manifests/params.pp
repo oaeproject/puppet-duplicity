@@ -1,4 +1,5 @@
 class duplicity::params(
+  $excludes              = $duplicity::defaults::excludes,
   $bucket                = undef,
   $dest_id               = undef,
   $dest_key              = undef,
